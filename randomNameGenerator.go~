@@ -101,6 +101,7 @@ func readLines(path string) ([]string, error) { //dosyadan veri erişimi...
 	return lines, scanner.Err()
 }
 
+// writeLines writes the lines to the given file.
 func writeLines(lines []string, path string) error { //arrayden dosyaya
 	file, err := os.Create(path)
   	if err != nil {
