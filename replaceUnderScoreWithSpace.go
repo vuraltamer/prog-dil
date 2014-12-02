@@ -5,7 +5,7 @@ package main
      "strings"
  )
 
- func main() {
+ func main{
 	var str string
 	var ilk int
 	var son int
@@ -13,11 +13,11 @@ package main
 	fmt.Scanf("%s", str)
 	str_split := strings.Split(str, "")
 
-	for ilk = 0; ilk < len(str_split); ilk++ { 
+	for ilk = 0; ilk < len(str_split); ilk++ { // ilk harfin solundaki ilk alt tirenin indisi. 
 		if string(str_split[ilk]) != "_" {break}
 	}
 	
-	for son = len(str_split)-1; son > 0; son-- {  
+	for son = len(str_split)-1; son > 0; son-- {  //son harfin sağındaki ilk alt tirenin indisi
 		if string(str_split[son]) != "_" {break}
 	}
 	
