@@ -1,9 +1,10 @@
 package main
 import (
- 	"bufio"
+ 	//"bufio"
   	"fmt"
-  	"log"
+  	//"log"
 	"os"
+	"io/ioutil"
 	"time"
 	"math/rand"
 )
@@ -11,6 +12,12 @@ import (
 var sozluk = map[string]map[string][]string {
 	"en": {
 		"name": {
+			"Apricot",
+			"Banana",
+			"Course",
+			"Dock",
+			"Elephant",
+			"File",
 			"Lion",
 			"Leopard",
 			"Bird",
@@ -18,30 +25,42 @@ var sozluk = map[string]map[string][]string {
 			"Monkey",
 		},
 		"adjective": {
+			"Famous",
+			"Poor",
+			"Fine",
 			"Mountain",
 			"Grazzy",
 			"Crazy",
 			"Nervius",
 			"Funny",
 			"Helpness",
+			"Dangerous",
 		},
 	},
 	"tr": {
 		"ad": {
+			
+			"Balık",
+			"Çocuk",
 			"mimar",
-			"adam",
-			"ev",
-			"bisiklet",
-			"bayram",
-			"sabah",
+			"Adam",
+			"Ev",
+			"Bisiklet",
+			"Buyruk",
+			"Sabah",
 			},
 		"sifat": {
-			"iri",
-			"güzel",
-			"acayip",
-			"fantastik",
-                        "kötü",
-			"berbat",
+			"Latif",
+			"Çirkef",
+			"Fedakar",
+			"Mükemmel",
+			"Becerikli",
+			"Harika",
+			"Güzel",
+			"Acayip",
+			"Garip",
+                        "Kötü",
+			"Berbat",
 		},
 	},
 }
@@ -67,7 +86,7 @@ func sifatSecici(dil string) string {
 	} 
 }
 
-func dilSecici(dil string) string { //random tamlamalar üretir.
+func dilTamlamaUreteci(dil string) string { //random tamlamalar üretir.
 	if dil == "tr" {
 		return sifatSecici("tr") + " " + adSecici("tr") 
 	}else {
@@ -86,67 +105,42 @@ func varMi(ara string, dizin []string) bool { //array içi string arar.
 	return sonuc
 }
 
-func readLines(path string) ([]string, error) { //dosyadan veri erişimi...
-	file, err := os.Open(path)
-	if err != nil {
-   		return nil, err
-	}
-	defer file.Close()
-
-	var lines []string
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-	return lines, scanner.Err()
+func createDir(path string, dirName string) {
+        os.Mkdir(path + "/" + dirName, 0777)
 }
 
-func writeLines(lines []string, path string) error { //arrayden dosyaya
-	file, err := os.Create(path)
-  	if err != nil {
-    		return err
-  	}
- 	defer file.Close()
-
-  	w := bufio.NewWriter(file)
-  	for _, line := range lines {
-    		fmt.Fprintln(w, line)
-  	}
-  	return w.Flush()
-}
-
-func openfiletoArray(file string) []string { //dosyadan arraya
-	lines, err := readLines("aa.txt")
-	st := []string{}
-	if err != nil {
-		log.Fatalf("readLines: %s", err)
-	}
-	for _,line := range lines {
-		st = append(st,line)
-	}
-	return st
-}
+func readDir(path string) []string {
+	var list []string
+    	files, _ := ioutil.ReadDir(path)
+    	for _, f := range files {
+		list = append(list, f.Name())
+        	
+    	}
+	return list
+}	
 
 
 
-func tamlama(dil string, file string, sayi int) []string {
+func tamlama(dil string, pathfile string, sayi int) []string {
 	sayac := 0
 	cikti := []string{}
-	cikti = openfiletoArray(file)
-	tam := dilSecici(dil)
-	for i := 0; i < 100; i++ {
+	eklenen := []string{}
+	cikti = readDir(pathfile)
+	tam := dilTamlamaUreteci(dil)
+	for i := 0; i < 1000; i++ {
 		if varMi(tam,cikti) == false {
-			cikti = append(cikti,tam)
+			cikti = append(cikti, tam)
+			eklenen = append(eklenen, tam)
+			createDir(pathfile, tam)
+			tam = dilTamlamaUreteci(dil)
 			sayac = sayac + 1
-			tam = dilSecici(dil)
 		if sayac == sayi {break}
 		}
 	}
-	writeLines(cikti,file)
-	return cikti		
+	return eklenen		
 }
 
 func main() {
-	fmt.Println(tamlama("tr","aa.txt",5))
-	//fmt.Println(dilSecici("en"))
+	fmt.Println(tamlama("tr","../tr_deneme/",5))
+	//fmt.Println(tamlama("en","../en_deneme/",5))
 }
