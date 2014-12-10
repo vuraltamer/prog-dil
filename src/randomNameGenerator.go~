@@ -1,0 +1,209 @@
+package main
+import (
+  	"fmt"
+	"os"
+	"io/ioutil"
+	"time"
+	"math/rand"
+	"strconv"
+)
+
+var sozluk = map[string]map[string][]string {
+	"en": {
+		"name": {
+			"Apricot",
+			"April",
+			"Ash",
+			"Avenue",
+			"Ambush",
+			"Byte",
+			"Ballerina",
+			"Banana",
+			"Baker",
+			"Barrel",
+			"Butcher",
+			"Course",
+			"Cup",
+			"Carpenter",
+			"Compass",
+			"Cell",
+			"Diamond",	
+			"Dock",
+			"Elephant",
+			"Axe",
+			"File",
+			"Lion",
+			"Leopard",
+			"Bird",
+			"Bear",
+			"Monkey",
+			"Zone",
+		},
+		"adjective": {
+			"Artificial",
+			"Attractive",
+			"Charming",
+			"Boring",
+			"Blessed",
+			"Convenient",	
+			"Famous",
+			"Fireless",
+			"Poor",
+			"Practical",
+			"Fine",
+			"Mountain",
+			"Grazzy",
+			"Crazy",
+			"Nervius",
+			"Funny",
+			"Helpness",
+			"Banner",
+			"Dangerous",
+		},
+	},
+	"tr": {
+		"ad": {
+			"Adam",
+			"Araba",
+			"At",
+			"Buyruk",
+			"Balık",
+			"Cam",
+			"Çocuk",
+			"Dedektif",
+			"Durak",
+			"Elem",
+			"Eylem",
+			"Fatura",
+			"Halk",
+			"Lider",
+			"Kalp",
+			"Mimar",
+			"Adam",
+			"Ev",
+			"Bisiklet",
+			"Buyruk",
+			"Sabah",
+			},
+		"sifat": {
+			"Latif",
+			"Çirkef",
+			"Fedakar",
+			"Faydasız",
+			"Alakasız",
+			"Amansız",
+			"Canlı",
+			"Heyecanlı",
+			"Şirin",
+			"Nazlı",
+			"Mükemmel",
+			"Becerikli",
+			"Harika",
+			"Harikulade",
+			"Gönüllü",
+			"Güzel",
+			"Acayip",
+			"Garip",
+                        "Kötü",
+			"Berbat",
+			"Zor",
+			"Zararlı",
+		},
+	},
+}
+
+func rSU(deger int) int { //random sayi uretici
+	rand.Seed(time.Now().UnixNano())
+	return rand.Intn(deger)
+}
+
+func adSecici(dil string) string { // tr ya da en ad seçimi yapar.
+	if dil == "tr" {
+		return sozluk["tr"]["ad"][rSU(len(sozluk["tr"]["ad"]))]
+	}else {
+		return sozluk["en"]["name"][rSU(len(sozluk["en"]["name"]))]
+	} 
+}
+
+func sifatSecici(dil string) string { 
+	if dil == "tr" {
+		return sozluk["tr"]["sifat"][rSU(len(sozluk["tr"]["sifat"]))]
+	}else {
+		return sozluk["en"]["adjective"][rSU(len(sozluk["en"]["adjective"]))]
+	} 
+}
+
+func dilTamlamaUreteci(dil string) string { //random tamlamalar üretir.
+	if dil == "tr" {
+		return sifatSecici("tr") + " " + adSecici("tr") 
+	}else {
+		return sifatSecici("en") + " " + adSecici("en")  
+	} 
+}
+
+func varMi(ara string, dizin []string) bool { //array içi string arar.
+	sonuc := false
+	for i := 0; i < len(dizin); i++ {
+		if ara == dizin[i] {
+			sonuc = true
+			break
+		}
+	}
+	return sonuc
+}
+
+func createDir(path string, dirName string) {
+        os.Mkdir(path + "/" + dirName, 0777)
+}
+
+func readDir(path string) []string {
+	var list []string
+    	files, _ := ioutil.ReadDir(path)
+    	for _, f := range files {
+		list = append(list, f.Name())
+        	
+    	}
+	return list
+}	
+
+func finalFonksiyon(dil string, pathfile string, sayi int) []string {
+	sayac := 0
+	cikti := []string{}
+	eklenen := []string{}
+	cikti = readDir(pathfile)
+	tam := dilTamlamaUreteci(dil)
+	denemesayisi := 0
+	if dil == "en" {
+		denemesayisi = len(sozluk["en"]["name"]) * len(sozluk["en"]["adjective"])
+	}else {
+		denemesayisi = len(sozluk["tr"]["ad"]) * len(sozluk["tr"]["sifat"])
+	}
+		
+	for i := 0; i < denemesayisi; i++ {
+		if varMi(tam,cikti) == false {
+			cikti = append(cikti, tam)
+			eklenen = append(eklenen, tam)
+			createDir(pathfile, tam)
+			tam = dilTamlamaUreteci(dil)
+			sayac = sayac + 1
+		if sayac == sayi {break}
+		}
+	}
+	return eklenen		
+}
+
+func main() {
+	arg:= os.Args[1]
+	arg1:= os.Args[2]
+	i, err := strconv.Atoi(arg1)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(2)
+	}
+	list := finalFonksiyon(arg,"../"+arg+"_deneme/",i)
+	
+	for _, n := range list {
+		fmt.Println(n)
+	}
+
+}
