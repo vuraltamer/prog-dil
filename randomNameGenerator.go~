@@ -14,20 +14,44 @@ var sozluk = map[string]map[string][]string {
 	"en": {
 		"name": {
 			"Apricot",
+			"April",
+			"Ash",
+			"Avenue",
+			"Ambush",
+			"Byte",
+			"Ballerina",
 			"Banana",
+			"Baker",
+			"Barrel",
+			"Butcher",
 			"Course",
+			"Cup",
+			"Carpenter",
+			"Compass",
+			"Cell",
+			"Diamond",	
 			"Dock",
 			"Elephant",
+			"Axe",
 			"File",
 			"Lion",
 			"Leopard",
 			"Bird",
 			"Bear",
 			"Monkey",
+			"Zone",
 		},
 		"adjective": {
+			"Artificial",
+			"Attractive",
+			"Charming",
+			"Boring",
+			"Blessed",
+			"Convenient",	
 			"Famous",
+			"Fireless",
 			"Poor",
+			"Practical",
 			"Fine",
 			"Mountain",
 			"Grazzy",
@@ -35,15 +59,28 @@ var sozluk = map[string]map[string][]string {
 			"Nervius",
 			"Funny",
 			"Helpness",
+			"Banner",
 			"Dangerous",
 		},
 	},
 	"tr": {
 		"ad": {
-			
+			"Adam",
+			"Araba",
+			"At",
+			"Buyruk",
 			"Balık",
+			"Cam",
 			"Çocuk",
-			"mimar",
+			"Dedektif",
+			"Durak",
+			"Elem",
+			"Eylem",
+			"Fatura",
+			"Halk",
+			"Lider",
+			"Kalp",
+			"Mimar",
 			"Adam",
 			"Ev",
 			"Bisiklet",
@@ -54,14 +91,25 @@ var sozluk = map[string]map[string][]string {
 			"Latif",
 			"Çirkef",
 			"Fedakar",
+			"Faydasız",
+			"Alakasız",
+			"Amansız",
+			"Canlı",
+			"Heyecanlı",
+			"Şirin",
+			"Nazlı",
 			"Mükemmel",
 			"Becerikli",
 			"Harika",
+			"Harikulade",
+			"Gönüllü",
 			"Güzel",
 			"Acayip",
 			"Garip",
                         "Kötü",
 			"Berbat",
+			"Zor",
+			"Zararlı",
 		},
 	},
 }
@@ -128,9 +176,8 @@ func tamlama(dil string, pathfile string, sayi int) []string {
 	tam := dilTamlamaUreteci(dil)
 	denemesayisi := 0
 	if dil == "en" {
-		denemesayisi = len(sozluk["en"]["name"]) * len(sozluk["en"]["adjectives"])
-	} 
-	else {
+		denemesayisi = len(sozluk["en"]["name"]) * len(sozluk["en"]["adjective"])
+	}else {
 		denemesayisi = len(sozluk["tr"]["ad"]) * len(sozluk["tr"]["sifat"])
 	}
 		
