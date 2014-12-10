@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"time"
 	"math/rand"
+	"strconv"
 )
 
 var sozluk = map[string]map[string][]string {
@@ -119,15 +120,20 @@ func readDir(path string) []string {
 	return list
 }	
 
-
-
 func tamlama(dil string, pathfile string, sayi int) []string {
 	sayac := 0
 	cikti := []string{}
 	eklenen := []string{}
 	cikti = readDir(pathfile)
 	tam := dilTamlamaUreteci(dil)
-	for i := 0; i < 1000; i++ {
+	denemesayisi := 0
+	if dil == "en" {
+		denemesayisi = len(sozluk["en"]["name"]) * len(sozluk["en"]["adjectives"])
+	}else {
+		denemesayisi = len(sozluk["tr"]["ad"]) * len(sozluk["tr"]["sifat"])
+	}
+		
+	for i := 0; i < denemesayisi; i++ {
 		if varMi(tam,cikti) == false {
 			cikti = append(cikti, tam)
 			eklenen = append(eklenen, tam)
@@ -141,6 +147,13 @@ func tamlama(dil string, pathfile string, sayi int) []string {
 }
 
 func main() {
-	fmt.Println(tamlama("tr","../tr_deneme/",5))
-	//fmt.Println(tamlama("en","../en_deneme/",5))
+	arg:= os.Args[1]
+	arg1:= os.Args[2]
+	i, err := strconv.Atoi(arg1)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(2)
+	    }
+	fmt.Println(tamlama(arg,"../"+arg+"_deneme/",i))
+
 }

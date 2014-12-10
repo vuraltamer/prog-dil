@@ -9,7 +9,7 @@ type stringYapi struct {
 	arg string
 }
 
-func (str *stringYapi) replaceUnderScoreWithSpace(){
+func (str *stringYapi) replaceUnderScoreWithSpace() string {
 	
 	var ilk int
 	var son int
@@ -37,12 +37,10 @@ func (str *stringYapi) replaceUnderScoreWithSpace(){
 		cikti += string(v)
 	}
 	
-	fmt.Println(cikti)
-
-	//////////////////	
+	return cikti
 }
 
 func main() {
 	arg:= stringYapi{arg: os.Args[1]}
-      	arg.replaceUnderScoreWithSpace()
+      	fmt.Println(arg.replaceUnderScoreWithSpace())
 }
