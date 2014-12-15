@@ -10,7 +10,7 @@ import (
 
 var sozluk = map[string]map[string][]string {
 	"en": {
-		"name": {
+		"ad": {
 			"Apricot",
 			"April",
 			"Ash",
@@ -39,7 +39,7 @@ var sozluk = map[string]map[string][]string {
 			"Monkey",
 			"Zone",
 		},
-		"adjective": {
+		"sifat": {
 			"Artificial",
 			"Attractive",
 			"Charming",
@@ -117,27 +117,11 @@ func rSU(deger int) int { //random sayi uretici
 	return rand.Intn(deger)
 }
 
-func adSecici(dil string) string { // tr ya da en ad seçimi yapar.
-	if dil == "tr" {
-		return sozluk["tr"]["ad"][rSU(len(sozluk["tr"]["ad"]))]
-	}else {
-		return sozluk["en"]["name"][rSU(len(sozluk["en"]["name"]))]
-	} 
-}
-
-func sifatSecici(dil string) string { 
-	if dil == "tr" {
-		return sozluk["tr"]["sifat"][rSU(len(sozluk["tr"]["sifat"]))]
-	}else {
-		return sozluk["en"]["adjective"][rSU(len(sozluk["en"]["adjective"]))]
-	} 
-}
-
 func dilTamlamaUreteci(dil string) string { //random tamlamalar üretir.
 	if dil == "tr" {
-		return sifatSecici("tr") + " " + adSecici("tr") 
+		return sozluk["tr"]["sifat"][rSU(len(sozluk["tr"]["sifat"]))] + " " + sozluk["tr"]["ad"][rSU(len(sozluk["tr"]["ad"]))] 
 	}else {
-		return sifatSecici("en") + " " + adSecici("en")  
+		return sozluk["en"]["sifat"][rSU(len(sozluk["en"]["sifat"]))] + " " + sozluk["en"]["ad"][rSU(len(sozluk["en"]["ad"]))]  
 	} 
 }
 
@@ -174,7 +158,7 @@ func finalFonksiyon(dil string, pathfile string, sayi int) []string {
 	tam := dilTamlamaUreteci(dil)
 	denemesayisi := 0
 	if dil == "en" {
-		denemesayisi = len(sozluk["en"]["name"]) * len(sozluk["en"]["adjective"])
+		denemesayisi = len(sozluk["en"]["ad"]) * len(sozluk["en"]["sifat"])
 	}else {
 		denemesayisi = len(sozluk["tr"]["ad"]) * len(sozluk["tr"]["sifat"])
 	}

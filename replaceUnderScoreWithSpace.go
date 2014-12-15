@@ -27,7 +27,7 @@ func (str *stringYapi) replaceUnderScoreWithSpace() string {
 	}
 	
 	for i = ilk+1; i < son; i++ {
-		if  string(c_split[i]) == "_"{   //alt tireleri boşluğa çeviriyor
+		if  string(c_split[i]) == "_" {   //alt tireleri boşluğa çeviriyor
 			c_split[i] = " "
 		}
 	}
